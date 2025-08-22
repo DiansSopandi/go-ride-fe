@@ -17,10 +17,49 @@ export const LoginForm = () => {
     interface LoginFormEvent extends React.FormEvent<HTMLFormElement> {}
 
     const handleLogin = (e: LoginFormEvent): void => {
-        // Handle login logic here
-        e.preventDefault();   
-        router.push('/dashboard');
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        fetch("http://localhost:8001/v1/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+
+                if (data.success) {
+                    router.push('/dashboard');
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
+
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8001/v1/auth/google/login";
+    }
+    const handleGithubLogin = () => {
+    window.location.href = "http://localhost:8001/v1/auth/github/login";
+  }
+
+  const handleLinkedInLogin = () => {
+    window.location.href = "http://localhost:8001/v1/auth/linkedin/login";
+  }
+  const handleFacebookLogin = () => {
+    window.location.href = "http://localhost:8001/v1/auth/facebook/login";
+  }
 
     return(
     <div className="min-h-screen flex items-center justify-center bg-muted px-4">
@@ -47,11 +86,12 @@ export const LoginForm = () => {
           >
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@example.com" className="ride-input" required />
+              <Input id="email" name="email" type="email" placeholder="you@example.com" className="ride-input" required />
             </div>
             <div className="relative">
               <Label htmlFor="password">Password</Label>
               <Input id="password" 
+                     name="password"
                      type={showPassword ? "text" : "password"} 
                      placeholder="••••••••" 
                      className="ride-input" 
@@ -66,6 +106,51 @@ export const LoginForm = () => {
             </div>
             <Button type="submit" className="w-full ride-button-primary">Login</Button>
           </form>
+
+          <div className="flex items-center my-6">
+            <div className="flex-grow border-t border-gray-300" />
+            <span className="px-3 text-sm text-muted-foreground">or continue with</span>
+            <div className="flex-grow border-t border-gray-300" />
+          </div>
+
+          <div className="space-y-3">
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2"
+              onClick={handleGoogleLogin}
+            >
+              <Image src="/icons/google.svg" alt="Google" width={20} height={20} />
+              Continue with Google
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2"
+              onClick={handleGithubLogin}
+            >
+              <Image src="/icons/github.svg" alt="GitHub" width={20} height={20} />
+              Continue with GitHub
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2"
+              onClick={handleLinkedInLogin}
+            >
+              <Image src="/icons/linkedin.svg" alt="LinkedIn" width={20} height={20} />
+              Continue with LinkedIn
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2"
+              onClick={handleFacebookLogin}
+            >
+              <Image src="/icons/facebook.svg" alt="Facebook" width={20} height={20} />
+              Continue with Facebook
+            </Button>
+
+          </div>          
 
           <p className="text-center text-sm text-muted-foreground mt-6">
           Don't have an account?{' '}
