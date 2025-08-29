@@ -8,6 +8,7 @@ import Link from "next/link";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { config } from "next/dist/build/templates/pages";
 
 export const RegisterForm = () => {
   const router = useRouter();
@@ -46,13 +47,13 @@ export const RegisterForm = () => {
 
   // SSO handlers
   const handleGoogleLogin = () =>
-    (window.location.href = "http://localhost:8001/v1/auth/google/login");
+    (window.location.href = `${config.apiUrl}/auth/google/login`);
   const handleGithubLogin = () =>
-    (window.location.href = "http://localhost:8001/v1/auth/github/login");
+    (window.location.href = `${config.apiUrl}/auth/github/login`);
   const handleLinkedInLogin = () =>
-    (window.location.href = "http://localhost:8001/v1/auth/linkedin/login");
+    (window.location.href = `${config.apiUrl}/auth/linkedin/login`);
   const handleFacebookLogin = () =>
-    (window.location.href = "http://localhost:8001/v1/auth/facebook/login");
+    (window.location.href = `${config.apiUrl}/auth/facebook/login`);
 
   return (
     <div className="w-full">

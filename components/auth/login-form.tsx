@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { config } from "next/dist/build/templates/pages"
 
 export const LoginForm = () => {
 
@@ -49,17 +49,17 @@ export const LoginForm = () => {
     }
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8001/v1/auth/google/login";
+        window.location.href = `${config.apiUrl}/auth/google/login`;
     }
     const handleGithubLogin = () => {
-    window.location.href = "http://localhost:8001/v1/auth/github/login";
+    window.location.href = `${config.apiUrl}/auth/github/login`;
   }
 
   const handleLinkedInLogin = () => {
-    window.location.href = "http://localhost:8001/v1/auth/linkedin/login";
+    window.location.href = `${config.apiUrl}/auth/linkedin/login`;
   }
   const handleFacebookLogin = () => {
-    window.location.href = "http://localhost:8001/v1/auth/facebook/login";
+    window.location.href = `${config.apiUrl}/auth/facebook/login`;
   }
 
 

@@ -27,7 +27,7 @@ export const Hero = () => {
                         <a href="/register" className="ride-button-secondary">Join Driver</a>
                     </div>
                     <div>
-                    <Link href="/transaction"><div className="ride-button-primary">Lihat Transaksi Saya</div></Link>
+                    <Link href="/transaction"><div className="ride-button-primary">See MyTransaction</div></Link>
                     </div>
                 </div>
 
