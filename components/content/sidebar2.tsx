@@ -13,13 +13,13 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { logout } from "@/lib/logout";
-import { useRouter } from "next/navigation";
 
 interface NavItem {
   name: string;
-  href: string;
+  href?: string;
   icon: React.ElementType;
+  action?: () => void; // untuk logout atau action lain
+  variant?: "default" | "danger";
 }
 
 const navItems: NavItem[] = [
@@ -27,23 +27,19 @@ const navItems: NavItem[] = [
   { name: "Users", href: "/dashboard/users", icon: Users },
   { name: "Transactions", href: "/dashboard/transactions", icon: DollarSign },
   { name: "Reports", href: "/dashboard/reports", icon: FileText },
+  {
+    name: "Logout",
+    icon: LogOut,
+    action: () => console.log("Logout clicked"), // TODO: replace dengan real logout
+    variant: "danger",
+  },
 ];
 
 export default function Sidebar() {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const toggleSidebar = () => setOpen((prev) => !prev);
   const closeSidebar = () => setOpen(false);
-
-  const handleLogout = async () => {
-    const res = await logout()
-      .then(() => true)
-      .catch(() => false); 
-
-    res ? router.push("/auth/login") : null; 
-    return res;
-  };
 
   return (
     <>
@@ -64,7 +60,7 @@ export default function Sidebar() {
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        {/* Header (Logo + Close button on mobile) */}
+        {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <Link href="/dashboard" className="flex items-center gap-2">
             <Image
@@ -86,33 +82,49 @@ export default function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 p-4">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              onClick={closeSidebar}
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary hover:text-primary-foreground transition"
-            >
-              <item.icon className="w-5 h-5" />
-              <span>{item.name}</span>
-            </Link>
-          ))}
-        </nav>
+        <nav className="flex-1 flex flex-col p-4 space-y-1">
+          {navItems.map((item, idx) => {
+            const isLogout = item.variant === "danger";
+            const commonClasses =
+              "flex items-center gap-2 px-3 py-2 rounded-md transition";
 
-        {/* Footer (Logout) */}
-        <div className="p-4 border-t border-border ">
-          <button
-            onClick={() => {
-              console.log("Logout clicked");
-              handleLogout();
-            }}
-            className="flex w-full items-center gap-2 px-3 py-2 rounded-md text-red-600 hover:bg-slate-300 dark:hover:bg-red-950 transition"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Logout</span>
-          </button>
-        </div>
+            if (item.href) {
+              return (
+                <Link
+                  key={idx}
+                  href={item.href}
+                  onClick={closeSidebar}
+                  className={cn(
+                    commonClasses,
+                    "hover:bg-primary hover:text-primary-foreground"
+                  )}
+                >
+                  <item.icon className="w-5 h-5" />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            }
+
+            return (
+              <button
+                key={idx}
+                onClick={() => {
+                  item.action?.();
+                  closeSidebar();
+                }}
+                className={cn(
+                  commonClasses,
+                  isLogout
+                    ? "mt-auto text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+                    : "hover:bg-primary hover:text-primary-foreground"
+                )}
+              >
+                <item.icon className="w-5 h-5" />
+                <span>{item.name}</span>
+              </button>
+            );
+          })}
+        </nav>
       </aside>
     </>
   );

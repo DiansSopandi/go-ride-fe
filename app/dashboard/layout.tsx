@@ -13,13 +13,13 @@ export default function DashboardLayout({
 
 
   return (
-    <div className="flex w-full min-h-screen bg-muted">
+    <div className="flex w-full h-screen overflow-hidden bg-gray-300">
       {/* <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}/> */}
       <Sidebar />
-      <main className="flex-1 flex flex-col">
+      <div className="flex flex-1  flex-col overflow-hidden">
         <DashboardNavbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}/>
-        <div className="p-4">{children}</div>
-      </main>
+        <main className="flex-1 overflow-y-auto px-2 py-2">{children}</main>
+      </div>
     </div>
   )
 }

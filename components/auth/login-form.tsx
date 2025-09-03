@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { config } from "next/dist/build/templates/pages"
+import { config } from "@/config"
 
 export const LoginForm = () => {
 
@@ -23,8 +23,9 @@ export const LoginForm = () => {
         const email = formData.get("email");
         const password = formData.get("password");
 
-        fetch("http://localhost:8001/v1/auth/login", {
+        fetch(`${config.apiUrl}/auth/login`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },

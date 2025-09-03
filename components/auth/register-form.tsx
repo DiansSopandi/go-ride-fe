@@ -8,7 +8,7 @@ import Link from "next/link";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { config } from "next/dist/build/templates/pages";
+import { config } from "@/config";
 
 export const RegisterForm = () => {
   const router = useRouter();
@@ -26,7 +26,7 @@ export const RegisterForm = () => {
       return;
     }
 
-    const res = await fetch("http://localhost:8001/v1/auth/register", {
+    const res = await fetch(`${config.apiUrl}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
