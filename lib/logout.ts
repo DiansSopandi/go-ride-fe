@@ -1,9 +1,11 @@
 "use client";
 
+import { config } from "@/config";
+
 // import Cookies from "js-cookie";
 
 export const logout = async () => {
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+  await fetch(`${config.apiUrl}/auth/logout`, {
     method: "POST",
     credentials: "include",
     headers: {
